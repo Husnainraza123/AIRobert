@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI Urdu Voice Robot</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: 'Noto Nastaliq Urdu', serif;
+      text-align: center;
+      padding-top: 50px;
+    }
+
+    #robot-img {
+      width: 200px;
+      margin-bottom: 30px;
+    }
+
+    button {
+      padding: 10px 25px;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      background-color: #1e90ff;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0c7bdc;
+    }
+
+    #response {
+      margin-top: 30px;
+      font-size: 22px;
+    }
+  </style>
+</head>
+<body>
+  <img id="robot-img" src="Robert.jpg" alt="AI Robot">
+  <h1>AI English Robot Learning English</h1>
+  <button onclick="startListening()">Start English</button>
+  <p id="response"></p>
+
+  <script>
+
+
+    const synth = window.speechSynthesis;
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.lang = 'en-US';
+
+    function speak(text) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      synth.speak(utterance);
+    }
+
+    
+function startListening() {
+      recognition.start();
+    }
+    recognition.onresult = function (event) {
+    const speech = event.results[0][0].transcript;
+    document.getElementById('response').innerText = "You said: " + speech;
+    processCommand(speech);
+  };
+
+   function processCommand(command) {
+    // WEATHER
+    if (command.includes("weather")) {
+      const weather = "Today's weather is pleasant, with a temperature of 30 degrees.";
+      speak(weather);
+      document.getElementById('response').innerText = weather;
+    }
+    
+    // NEWS
+    else if (command.includes("news")) {
+      const news = "Pakistan won the cricket match!";
+      speak(news);
+      document.getElementById('response').innerText = news;
+    }
+
+    // OPEN YOUTUBE
+    else if (command.includes("YouTube")) {
+      window.open("https://www.youtube.com", "_blank");
+      speak("Opening YouTube");
+    }
+
+    // OPEN GOOGLE
+    else if (command.includes("Google")) {
+      window.open("https://www.google.com", "_blank");
+      speak("Opening Google");
+    }
+
+    // OPEN CHATGPT
+    else if (command.includes("chatgpt") || command.includes("chat GPT")) {
+      window.open("https://chatgpt.com", "_blank");
+      speak("Opening ChatGPT");
+    }
+
+    else if (command.includes("what is your name") || command.includes("What is your name") || command.includes("what's your name")  || command.includes("What's your name")) {
+      speak("My Name is Husnain Memon");
+
+    }
+
+    // OPEN FACEBOOK
+    else if (command.includes("Facebook")) {
+      window.open("https://www.facebook.com", "_blank");
+      speak("Opening Facebook");
+    }
+
+    // DEFAULT: SEARCH
+    else {
+      const searchQuery = encodeURIComponent(command);
+      const searchUrl = `https://www.google.com/search?q=${searchQuery}`;
+      window.open(searchUrl, "_blank");
+      const message = `I couldn't understand. Searching Google for: ${command}`;
+      speak(message);
+      document.getElementById('response').innerText = message;
+    }
+  }
+    
+  </script>
+</body>
+</html>
